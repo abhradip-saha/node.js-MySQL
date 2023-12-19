@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+</head>
+<body>
+    <h1>Search here</h1>
+    <form onsubmit="return searching()">
+        <input type="search" name="name" placeholder="Search name" id="name">
+        <input type="search" name="email" placeholder="Search email" id="email">
+        <input type="search" name="mno" placeholder="Search mobile no." id="mno">
+        <input type="submit" value="search">
+    </form>
+   <h1>Students List</h1>
+   <table border="1" width="100%">
+    <tr>
+        <th>Sl.No</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        
+    </tr>
+    <% if(student.length>0){%>
+        <% for(var i=0;i<student.length ; i++ ){%>
+                <tr class="tr">
+                    <td><%- student[i].id %></td>
+                    <td><%- student[i].Name %></td>
+                    <td><%- student[i].Email %></td>
+                    <td><%- student[i].Phone %></td>
+                    
+                </tr>
+        <% } %>
+        <% } else{ %>
+            <tr>
+                <td>Data Not Found</td>
+            </tr>
+        <% } %>
+   </table>
+
+</body>
+</html>
+<script>
+    function searching()
+    {
+        document.querySelectorAll(".tr").forEach(function(ele){
+            ele.remove();
+        })
+        var table=document.getElementsByTagName("table")[0];
+        var name=document.getElementById("name").value;
+        var email=document.getElementById("email").value;
+        var mno=document.getElementById("mno").value;
+        var req=new XMLHttpRequest();
+        req.open("GET","/searching?name="+name+"&email="+email+"&mno="+mno)
+        req.send()
+        req.onreadystatechange=function()
+        {
+            if(req.readyState==4 && req.status == 200){
+                
+               var obj=JSON.parse(req.responseText);
+            //    console.log(obj)
+               if(obj.length>0){
+                    
+                    for(let i=0;i<obj.length;i++)
+                         table.innerHTML += "<tr class='tr'><td>"+(i+1)+"</td> <td>"+obj[i]['Name']+"</td><td>"+obj[i]['Email']+"</td><td>"+obj[i]['Phone']+"</td></tr>"
+               }
+               else{
+                    table.innerHTML+="<tr class='tr'><td colspan='5'>Data Not Found<td></tr>"
+               }
+            }
+        }
+        return false;
+    }
+</script>

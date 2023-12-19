@@ -1,0 +1,30 @@
+<h1>Student Register</h1>
+<form onsubmit="return submitForm()">
+    <input type="text" name="name" placeholder="Enter name" required><br>
+    <input type="email" name="email" placeholder="Enter email" required><br>
+    <input type="number" name="mno" placeholder="Enter mobile no" required><br>
+    <input type="submit" value="submit">
+</form>
+<div id="request"></div>
+
+<script>
+    function submitForm(){
+        var name=document.getElementsByTagName('input')[0];
+        var email=document.getElementsByTagName('input')[1];
+        var mno=document.getElementsByTagName('input')[2];
+        var req= new XMLHttpRequest();
+        req.open("POST",'/');
+        req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        req.send("name="+name.value+"&email="+email.value+"&mno="+mno.value);
+        req.onreadystatechange=function(){
+            if(req.readyState==4 && req.status == 200){
+                // alert(req.responseText);
+                document.getElementById("request").innerHTML=req.responseText;
+                name.value="";
+                email.value="";
+                mno.value="";
+            }
+        }
+        return false;
+    }
+</script>
