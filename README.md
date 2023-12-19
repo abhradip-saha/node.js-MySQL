@@ -1,3 +1,4 @@
+# DESCRIPTION
 This repository contains the codes to link node.js with MySQL queries to perform various database operations.
 
 # NOTE
